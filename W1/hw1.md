@@ -1,4 +1,4 @@
-交作業的方式:
+#hw1 : 交作業的方式
 1. 登入 GitHub 創建新的 repository
 2. 在本地的資料夾啟動 git bash 後進行 git clone
 3. clone 的方式最好是用SSH key，不過懶得建立本機授權的話以 HTTPS 來clone也行

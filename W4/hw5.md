@@ -15,10 +15,11 @@
 包括：回傳所有餐廳資料、回傳單一餐廳資料、刪除餐廳、新增餐廳、更改餐廳，
 你的 API 會長什麼樣子？請提供一份 API 文件。
 
-API URL : www.restaurantlib.com/lib</br>
-[Item]----[Method]----[Path]----[Paraments]</br>
-[查詢餐廳]-[GET]-------[/:name]--[無]</br>
-[刪除餐廳]-[DELETE]----[/:name]--[無]</br>
-[新增餐廳]-[POST]------[無]------[name]</br>
-[更改餐廳]-[PATCH]-----[/name]---[name]</br>
+    API URL : www.restaurantlib.com/lib
+    |行為|方法|路徑|參數|
+    |:----:|:----:|:----:|:----:|
+    |查詢餐廳|GET|/:name|無|
+    |刪除餐廳|DELETE|/:name|無|
+    |新增餐廳|POST|無|name|
+    |更改餐廳|PATCH|/name|name|
 

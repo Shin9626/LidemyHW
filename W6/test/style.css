@@ -1,0 +1,67 @@
+.post {
+    width: 450px;
+    border: 1px solid #ccc;
+    border-radius:5px; 
+    font-family: Microsoft JhengHei;
+    position: relative;        
+}
+
+.post__options{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.post__top {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.post__header{
+    display: flex;
+    align-items: center;
+}
+
+.post__avatar{
+    height: 50px;
+    width: 50px;
+    border-radius:5px;
+    background-color: orange;
+}
+
+.post__info{
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.post__timestamp::after{
+    content: "";
+    height: 10px;
+    width: 10px;
+    background-color: grey;
+    display:inline-block;
+    border-radius: 50%;
+}
+
+.post__content{
+    white-space: pre-line;
+    padding: 10px;
+}
+
+.post__thumbnail{
+    height: 250px;
+    background-color: orange;
+}
+
+.post__preview-info{
+    background-color: ghostwhite;
+    padding: 10px;
+}
+
+.post__preview-domain{
+    font-size: 10px;    
+}
+
+.post__preview-title{
+    font-weight: bold;  
+}

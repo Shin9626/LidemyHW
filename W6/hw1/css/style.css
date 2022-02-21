@@ -127,3 +127,13 @@ body {
 
     text-align: center;
 }
+
+@media screen and (max-width: 600px){
+    .form {
+    margin-top: 0;
+    width: 100%;;
+    border-radius: 20px;
+
+    background-size: 350%;
+    }
+}

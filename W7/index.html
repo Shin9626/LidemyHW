@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector Practice</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="box" action="">
+        <button type="button" class="add-btn">add</button>
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+    </div>
+</body>
+<script>
+    let num = 4;
+
+    document.querySelector('.add-btn').addEventListener('click', () => {
+        const newBtn = document.createElement('button');
+        newBtn.setAttribute('type', 'button')
+        newBtn.setAttribute('data-value', num)
+        newBtn.classList.toggle('btn')
+        newBtn.innerText = num
+        num++
+
+        document.querySelector('.box').appendChild(newBtn)
+    })
+
+    document.querySelector('.box').addEventListener('click', (e) => {
+        if(e.target.classList.contains('btn')){
+            alert(e.target.getAttribute('data-value'))
+        }
+    })
+</script>
+
+</html>

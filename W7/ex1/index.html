@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="box">
+        <div>
+            <label for=""><input type="checkbox" name="en">英文</label>
+        </div>
+        <div>
+            <label for=""><input type="checkbox" name="num">數字</label>
+        </div>
+        <div>
+            <label for=""><input type="checkbox" name="sp">特殊符號</label>
+        </div>
+        <button type="button" id="btn-generate">產生</button>
+    </div>
+    <div class="result">
+
+    </div>
+</body>
+<script>
+    function getChar(name, char) {
+        if(document.querySelector(`input[name=${name}]`).checked){
+            return char;
+        }
+    }
+
+    document.querySelector('#btn-generate').addEventListener("click", () => {
+
+        let availableChar =
+            getChar('en', "abcdefghijklmnopqrstuvwxyz") +
+            getChar('num', "0123456789") +
+            getChar('sp', "~!@#$%^&*_+-=");
+
+        let result = '';
+        for (let i = 0; i < 10; i++) {
+            let number = Math.floor(Math.random() * availableChar.length);
+            result += availableChar[number];
+        }
+
+        document.querySelector('.result').innerText = result;
+    })
+</script>
+
+</html>

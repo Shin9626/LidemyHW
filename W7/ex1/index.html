@@ -19,6 +19,9 @@
         <div>
             <label for=""><input type="checkbox" name="sp">特殊符號</label>
         </div>
+        <div>
+            要產生幾位密碼：<input type="text" name="lenght" id="password">
+        </div>
         <button type="button" id="btn-generate">產生</button>
     </div>
     <div class="result">
@@ -30,6 +33,10 @@
         if(document.querySelector(`input[name=${name}]`).checked){
             return char;
         }
+
+        else{
+            return ''
+        }
     }
 
     document.querySelector('#btn-generate').addEventListener("click", () => {
@@ -39,10 +46,19 @@
             getChar('num', "0123456789") +
             getChar('sp', "~!@#$%^&*_+-=");
 
+        let passwordLenght = Number(document.querySelector('input[name=lenght]').value);
+
         let result = '';
-        for (let i = 0; i < 10; i++) {
-            let number = Math.floor(Math.random() * availableChar.length);
-            result += availableChar[number];
+
+        if(availableChar!=''){
+            for (let i = 0; i < passwordLenght; i++) {
+                let number = Math.floor(Math.random() * availableChar.length);
+                result += availableChar[number];
+            }       
+        }
+        
+        else {
+            result = "請勾選任一選項以產生密碼"
         }
 
         document.querySelector('.result').innerText = result;

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>FAQ</title>
+</head>
+
+<body>
+    <div class="view">
+        <header>
+            常見問題
+        </header>
+        <div class="content">
+            <hr>
+                <div class="question-box" name="q1" data-value="1"> 
+                    問題1
+                </div>
+            <hr>
+                <div class="question-box" name="q2" data-value="2">
+                    問題2
+                </div>
+            <hr>
+                <div class="question-box" name="q3" data-value="3">
+                    問題3
+                </div>
+            <hr>
+            
+            
+        </div>
+        <footer>
+            聯絡我
+        </footer>
+    </div>
+</body>
+<script>
+    var a = ["解答1", "解答2", "解答3"]
+
+    document.querySelector('.content').addEventListener('click', (e) => {
+        // 得到目標編號
+        let questionNumber = e.target.getAttribute('data-value')
+        let answer = document.querySelector(`.a${questionNumber}`)
+
+        if(!answer){
+            let div = document.createElement('div')
+            div.innerText = a[questionNumber - 1]
+            div.classList.add(`a${questionNumber}`)
+            div.setAttribute("data-value",`${questionNumber}`)
+
+            document.querySelector(`div[name=q${questionNumber}]`).appendChild(div)
+        }
+
+        else{
+            answer.parentNode.removeChild(answer)
+        }
+    })
+</script>
+
+</html>

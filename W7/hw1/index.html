@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>我只是一個表單</title>
+</head>
+
+<body>
+    <div class="form">
+        <form action="">
+            <div class="form__header">
+                I am just a form
+            </div>
+            <div class="form__content">
+                暱稱：
+                <div id="name-block">
+                    <div class="form__input-block">
+                        <input type="text" class="form__name">
+                    </div>
+                </div>
+
+                性別：
+                <div id="gender-block">
+                    <div class="form__input-block">
+                        <label><input class="form__gender" type="radio" name="gender">男</label>
+                        <label><input class="form__gender" type="radio" name="gender">女</label>
+                        <label><input class="form__gender" type="radio" name="gender">其他</label>
+                    </div>
+                </div>
+
+                電子郵件：
+                <div id="email-block">
+                    <div class="form__input-block">
+                        <input type="text" class="form__email">
+                    </div>
+                </div>
+
+                想說的話：
+                <div>
+                    <div class="form__input-block form__comment">
+                        <textarea name="" id="form__comment" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+
+                <div class="form__sumbit">
+                    <button type="button">sumbit</button>
+                </div>
+            </div>
+    </div>
+    </form>
+    <div class="footer">
+        <div class="footer__content">
+            contact me : penspulse@gmail.com
+        </div>
+    </div>
+    <script>
+        document.querySelector('.form__sumbit').addEventListener('click', () => {
+            // 檢查暱稱
+            let name = {
+                value: document.querySelector('.form__name').value,
+                class : '.form__name',
+                type: "name"
+            }
+
+            let gender = {
+                value: document.querySelectorAll('.form__gender'),
+                class: '.form__gender',
+                type: "gender"
+            }
+
+            let email = {
+                value: document.querySelector('.form__email').value,
+                class: '.form__email',
+                type: "email"
+            }
+
+            SetWarningText(name);
+            SetWarningText(gender);
+            SetWarningText(email);
+        })
+
+        function SetWarningText(data) {
+            switch (data.type) {
+                case "name": {
+                    if (data.value == "")
+                        var warningText = "請填寫暱稱"
+                    break;
+                }
+
+                case "email": {
+                    if (data.value == "" || !data.value.includes('@'))
+                        var warningText = "請正確的 email"
+                    break;
+                }
+
+                case "gender": {
+                    let flag = 0;
+                    for (let i = 0; i < data.value.length; i++) {
+                        if (data.value[i].checked) flag = 1;
+                    }
+
+                    if (flag === 0) var warningText = "請選擇性別"
+                        break;
+                }
+
+                default:
+                    break;
+            }
+
+            let warningDiv = document.querySelector(`div[name=warning-${data.type}]`);
+
+            if(warningDiv){
+                if(!warningText) warningDiv.parentNode.removeChild(warningDiv)
+                return
+            }
+
+            else if (warningText){
+                let div = document.createElement('div');
+                div.innerText = warningText
+                div.style.color = "RED"
+                div.style.textAlign = "center"
+                div.style.margin = "10px 0px 40px"
+                div.setAttribute("name", `warning-${data.type}`)
+
+                document.querySelector(data.class).parentNode.parentNode.appendChild(div)
+            }
+        }
+    </script>
+</body>
+
+</html>

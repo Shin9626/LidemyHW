@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Todo List</title>
+</head>
+<body>
+    <div class="list__box">
+        <div class="list__content">
+            <div class="list__create">
+                <input type="text" placeholder="要做什麼事">
+            </div>
+            <hr>
+        </div>
+    </div>
+</body>
+<script>
+    document.querySelector('.list__create input').addEventListener('keypress', (e)=>{
+
+        let todoContent = '<span>' + document.querySelector('.list__create input').value + '</span>';
+
+        if(e.key == 'Enter') {
+            document.querySelector('.list__create input').value = ''
+
+            let div = document.createElement('div');
+            div.innerHTML = '<input type="checkbox" name="done">' + todoContent + '<input type="button" value="刪除">'
+            div.classList.add('list__item')
+
+            document.querySelector('.list__content').appendChild(div)
+        }
+
+        document.querySelector('.list__item input[name=done]').addEventListener('change', (e)=>{
+            if(e.target.checked) {
+                e.target.parentNode.querySelector('span').innerHTML = '<s>' + e.target.parentNode.querySelector('span').innerHTML +'</s>'
+            }
+            else { console.log('not checked')}
+        })
+    })
+
+
+</script>
+</html>

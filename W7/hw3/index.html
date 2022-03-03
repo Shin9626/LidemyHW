@@ -9,37 +9,60 @@
 </head>
 <body>
     <div class="list__box">
+        <div class="list__icon-box">
+            <div class="circle"></div>
+            <header>
+                <div>
+                    Just a ToDo List ^Q^
+                </div>
+            </header>
+            <div class="circle"></div>
+        </div>
+        
+        <div class="list__create">
+            <input type="text" autofocus placeholder="Press Enter To Add Item." class="list__input">
+        </div>
         <div class="list__content">
-            <div class="list__create">
-                <input type="text" placeholder="要做什麼事">
-            </div>
-            <hr>
+            
         </div>
     </div>
 </body>
 <script>
     document.querySelector('.list__create input').addEventListener('keypress', (e)=>{
-
-        let todoContent = '<span>' + document.querySelector('.list__create input').value + '</span>';
-
+        // 按下 Enter 才執行
         if(e.key == 'Enter') {
+            // 取得 input 內容後清空
+            const todoContent =  document.querySelector('.list__create input').value;
             document.querySelector('.list__create input').value = ''
 
+            //新增 div 
             let div = document.createElement('div');
-            div.innerHTML = '<input type="checkbox" name="done">' + todoContent + '<input type="button" value="刪除">'
+            div.innerHTML = '<input type="checkbox" name="done"><span class="todoText">' + 
+                                todoContent + 
+                            '</span><input type="button" value="Delete" class="todoDelete">'
+
             div.classList.add('list__item')
 
             document.querySelector('.list__content').appendChild(div)
         }
 
-        document.querySelector('.list__item input[name=done]').addEventListener('change', (e)=>{
-            if(e.target.checked) {
-                e.target.parentNode.querySelector('span').innerHTML = '<s>' + e.target.parentNode.querySelector('span').innerHTML +'</s>'
-            }
-            else { console.log('not checked')}
+        // 執行 todoItem-checkbox 監聽
+        document.querySelector('.list__content').addEventListener('change', (e)=>{
+            // 取得 todoItem 內容
+            const todoText = e.target.nextSibling.innerText
+
+            // 勾選代表完成 完成的話加入刪除線
+            if(e.target.checked)
+                e.target.nextSibling.innerHTML = '<del>' + todoText + '</del>'
+            else
+                e.target.nextSibling.innerHTML = todoText
+        })
+
+        // 執行 todoItem-button 監聽
+        document.querySelector('.list__content').addEventListener('click', (e) => {
+            if(e.target.classList.contains('todoDelete'))
+                console.log(e.target.parentNode.remove());
         })
     })
-
-
 </script>
 </html>

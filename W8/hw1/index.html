@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300&family=Zen+Maru+Gothic&display=swap"
+        rel="stylesheet">
+    <title>吃吃看 Taste It!</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav__logo">特</div>
+        <div class="nav__item">
+            <div class="nav__btn">試試手氣</div>
+            <div class="nav__btn">點餐目錄</div>
+            <div class="nav__btn">訂單查詢</div>
+            <div class="nav__btn">常見問題</div>
+        </div>      
+    </nav>
+    <div class="lottery__box">
+        <div class="lottery__manual">
+            <h3>2022 盛夏輕食特賞！抽獎活動辦法</h3>
+            <div class="manual__box">
+                <hr>
+                活動期間：　2022/06/01 ~ 2022/07/01
+                <hr>
+                活動說明：　老闆有錢沒地方花所以決定舉辦活動<br>
+                　　　　　　回饋各位老顧客，活動期間只要來店<br>
+                　　　　　　消費滿 1 元即可抽獎，有抽有希望！<br>
+                <hr>
+                獎品內容：　頭獎一名：真的有要抽的 GOGORO 一台<br>
+                　　　　　　　　　　　（市價 69980 元）<br>
+                　　　　　　貳獎三名：45 吋電視一台<br>
+                　　　　　　　　　　　（市價 14990 元）<br>
+                　　　　　　參獎十名：撒太耳娛樂脫口秀《顏上》<br>
+                　　　　　　　　　　　入場券一張（市價 1800 元）
+                <hr>
+            </div>
+            <div class="lottery__go">
+                點我抽獎
+            </div>
+        </div>
+    </div>
+    <footer></footer>
+</body>
+<script>
+    const request = new XMLHttpRequest()
+    const container = document.querySelector('.lottery__box')
+
+    document.querySelector('.lottery__go').addEventListener('click', () => {
+        request.open('GET', 'https://dvwhnbka7d.execute-api.us-east-1.amazonaws.com/default/lottery', true)
+        request.send()
+    })
+
+    request.onload = (e) => {
+        if (request.status >= 200 & request.status < 400) {
+            const json = JSON.parse(request.responseText)
+            document.querySelector('.lottery__manual').innerHTML = LotteryResult(json).text
+
+            if(LotteryResult(json).img !="")
+                container.style.backgroundImage = `url('${LotteryResult(json).img}')`
+            else {
+                document.querySelector('.lottery__manual').style['background-color'] = "rgb(33, 33, 33)"
+                container.style.backgroundImage = "none"
+                container.style.color = "rgb(255, 255, 255)"
+                container.style['background-color'] = "rgb(33, 33, 33)"
+            }
+        }
+        else alert('系統繁忙中，請稍後再試')
+    }
+
+    request.onerror = () => {
+        alert('系統錯誤，請稍後再試')
+    }
+
+    function LotteryResult(data) {
+        let result = {
+            text : "",
+            img : ""
+        }
+
+        switch (data.prize) {
+            case "FIRST":{
+                result.text = "恭喜你抽中頭獎：真的有要抽的 GOGORO 一台！"
+                result.img = "https://cdn.pixabay.com/photo/2019/07/04/06/35/flight-4315953_960_720.jpg"
+                break;
+            }
+                
+            case "SECOND": {
+                result.text = "恭喜你抽中頭獎：45吋電視一台！"
+                result.img = "https://cdn.pixabay.com/photo/2016/11/30/08/46/living-room-1872192_960_720.jpg"
+                break;
+            }
+            
+            case "THIRD": {
+                result.text = "恭喜你抽中參獎：撒太耳娛樂脫口秀《顏上》入場券一張！"
+                result.img = "https://cdn.pixabay.com/photo/2017/11/24/10/43/ticket-2974645_960_720.jpg"
+                break;
+            }
+        
+            case "NONE": {
+                result.text = "哭哭沒中，銘謝惠顧"
+                break;
+            }
+        }
+
+        return result
+    }
+</script>
+
+</html>

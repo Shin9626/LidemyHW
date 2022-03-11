@@ -64,7 +64,7 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2px 1px;
+    margin: 3px 1px;
 }
 
 .game__stream div img {

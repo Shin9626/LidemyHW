@@ -26,22 +26,20 @@
     </div>
 </body>
 <script>
-    var iconUrl = ""
     const container = document.querySelector('.container')
+
     //page initialize
     const request = new XMLHttpRequest()
     request.open('GET', 'https://api.twitch.tv/helix/games/top?first=5')
     SendReq()
-
-    // render 
     request.onload = () => {
         if (request.status >= 200 && request.status <= 400) {
             const top5Game = JSON.parse(request.responseText)
-
             let games = document.querySelectorAll('.game__nav')
 
             games.forEach((games, index) => {
                 games.innerHTML = (`${top5Game.data[index].name}`)
+                games.setAttribute("game-id", `${top5Game.data[index].id}`)
             })
         }
     }
@@ -49,54 +47,53 @@
     // event render
     document.querySelector('nav').addEventListener('click', (e) => {
         if (e.target.classList.contains('game__nav')) {
-            let gameName = e.target.innerText
 
-            // send game name to get game id
-            request.open('GET', `https://api.twitch.tv/helix/games?name=${gameName}`)
+            let gameId = e.target.getAttribute("game-id");
+
+            request.open('GET', `https://api.twitch.tv/helix/streams?game_id=${gameId}`)
             SendReq()
             request.onload = () => {
                 if (request.status >= 200 && request.status <= 400) {
-                    const gameData = JSON.parse(request.responseText)
-                    const gameId = gameData.data[0].id
+                    // clear the container
+                    container.innerHTML = ""
 
-                    // send game id to get stream data
-                    request.open('GET', `https://api.twitch.tv/helix/streams?game_id=${gameId}`)
-                    SendReq()
+                    const streamData = JSON.parse(request.responseText)
+                    let userId = ""
 
-                    request.onload = () => {
-                        container.innerHTML = ""
-                        if (request.status >= 200 && request.status <= 400) {
-                            const streamData = JSON.parse(request.responseText)
-                            for (let i = 0; i < 20; i++) {
-                                const streams = document.createElement('div')
-                                streams.classList.add('game__stream')
-                                GetUserIcon(streamData.data[i].user_id)
-                                
-                                let url = streamData.data[i].thumbnail_url.replace('{width}x{height}', '400x225')
+                    for (let i = 0; i < streamData.data.length; i++) {
 
-                                streams.innerHTML = `<img src = "${url}"> <div><img src="${iconUrl}" id=img__${i}>${streamData.data[i].user_name}</div>`
-                                container.appendChild(streams)           
-                            }
-                        }
+                        let streamImg = streamData.data[i].thumbnail_url.replace('{width}x{height}', '400x225')
+
+                        let streamBox = document.createElement('div')
+                        streamBox.classList.add('game__stream')
+                        streamBox.setAttribute("user-id", streamData.data[i].user_id)
+                        streamBox.innerHTML = `<img src = "${streamImg}">
+                                                    <div><img>
+                                                        <div class="stream__info">
+                                                            <div class="stream__title">${streamData.data[i].title}</div>
+                                                            <div class="stream__user">${streamData.data[i].user_name}</div>
+                                                        <div>
+                                                    </div>`
+                        container.appendChild(streamBox)
+                        userId += `id=${streamData.data[i].user_id}&`
                     }
+                    GetUserIcon(userId)
                 }
             }
         }
     })
 
     function GetUserIcon(id) {
-        request.open('GET', `https://api.twitch.tv/helix/users?id=${id}`)
+        request.open('GET', `https://api.twitch.tv/helix/users?${id}`)
         SendReq()
         request.onload = () => {
             if (request.status >= 200 && request.status <= 400) {
-                const userData = JSON.parse(request.responseText)
-                GetUrl(userData.data[0].profile_image_url)
+                let data = (JSON.parse(request.responseText)).data;
+                for (let i = 0; i < data.length; i++) {
+                    document.querySelector(`div[user-id="${data[i].id}"] div img`).setAttribute("src", data[i].profile_image_url)    
+                }
             }
         }
-    }
-
-    function GetUrl(url){
-        iconUrl = url
     }
 
     // request send

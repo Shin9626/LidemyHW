@@ -1,14 +1,18 @@
 body {
     width: 100%;
     margin: 0;
+    background-color: rgb(126, 105, 125);
+    background-image: url(https://dvblobcdnjp.azureedge.net//Content/ueditor/net/upload1/2021-09/d2fc6feb-a48e-4ff6-8cd9-689a0cb43ff5.png);
 }
 
 nav {
     display: flex;
+    justify-content: center;
     align-items: center;
     height: 50px;
 
-    background-color: rgb(252, 248, 255);
+    background-color: rgb(124, 79, 158);
+    color: aliceblue;
 }
 
 .game__nav {
@@ -24,28 +28,63 @@ nav {
 
 .container {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
 .game__stream {
+    width: 300px;
+
     display: flex;
     flex-direction: column;
     
     margin: 20px 10px;
-    padding-bottom: 5px;
 
-    border: 1px gray solid;
+    border: 1px rgb(199, 199, 199) solid;
     border-radius: 8px;
 
     text-align: center;
+    font-size: 18px;
+
+    background-color: rgba(0, 0, 0, 0.78);
+    color: white;
 }
 
 .game__stream img {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    transition: 0.3s;
 }
 
-.game__stream span {
-    margin: 5px 0;
-    font-size: 20px;
+.game__stream img:hover{
+    -webkit-filter:brightness(2);
+}
+
+.game__stream div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px 1px;
+}
+
+.game__stream div img {
+    margin-right: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: aliceblue;
+}
+
+.stream__info {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.stream__info div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }

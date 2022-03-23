@@ -1,0 +1,58 @@
+body {
+    text-align: center;
+    font-family: Microsoft JhengHei;
+}
+
+.container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.job__box {
+    margin: 20px;
+
+    border: 1px rgb(66, 168, 168) solid;
+    border-radius: 5px;
+
+    text-align:  left;
+}
+
+.job {
+    margin: 15px 25px;
+}
+
+.job__form {
+    margin: 50px 25px;
+    padding: 15px 0;
+
+    border: 1px rgb(66, 168, 168) solid;
+    border-radius: 5px;
+}
+
+.job__form div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 15px 20px;
+}
+
+.job__link {
+    margin: 0px 1px;
+    padding: 3px 10px;
+    
+    border:  1px rgb(66, 168, 168) solid;
+    border-radius: 5px;
+
+    color: white;
+    font-weight: bold;
+    text-decoration:none;
+
+    background-color: rgb(66, 168, 168);
+
+    transition: 0.3s;
+}
+
+.job__link:hover {
+    background-color: rgb(34, 82, 114);
+}

@@ -19,42 +19,30 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
         Welcome to LiveAlone! 歡迎來到邊緣世界
     </header>
     <main class="board">
-        <form method="POST" action="./handle_add_comment.php" class="board__form">
-            <div class="board__title">
-                Comments
-                <div class="board__login">
-                    <a href="./register.php">會員登入/註冊</a>
-                </div>
-            </div>
+        <div class="board__title">
+            Sign In / Sign up
+        </div>
+        <h3>如果您沒有註冊過本網站會員帳號，按下登入後會進行註冊</h3>
+        <div><?php if($_GET['err'] == '1062') echo "該帳號已註冊！"; ?></div>
+        <form method="POST" action="./handle_register.php" class="board__form">
             <div>
                 暱稱： <input type="text" name="nickname" class="board__input">
             </div>
-            <div>
-                <textarea id="board__content" rows="10" name="content"></textarea>
+            <div class="board__username">
+                帳號： <input type="text" name="username" class="board__input">
+            </div>
+            <div class="board__password">
+                密碼： <input type="password" name="password" class="board__input">
             </div>
             <div class="board__submit-box">
-                <input type="submit" value="送出" class="board__submit-btn">
+                <input type="submit" value="登入" class="board__submit-btn">
             </div>
         </form>
         <div class="board__hr"></div>
-        <section>
-            <?php while ($row = $result->fetch_assoc()) { ?>
-                <div class="card">
-                    <div class="card__img"></div>
-                    <div class="card__body">
-                        <div class="card__info">
-                            <span class="card__author"><?php echo $row['nickname']; ?></span>
-                            <span class="card__time"><?php echo $row['created_at']; ?></span>
-                        </div>
-                        <div class="card__content"><?php echo $row['content']; ?></div>
-                    </div>
-                </div>
-            <?php } ?>
-        </section>
     </main>
 </body>
 <script>
-    document.querySelector('.board__submit-btn').addEventListener('click', (e) => {
+    /*document.querySelector('.board__submit-btn').addEventListener('click', (e) => {
         e.preventDefault();
         let nickname = document.querySelector('input[name=nickname]').value;
         let content = document.querySelector('textarea[name=content]').value;
@@ -70,7 +58,7 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
             }
 
         } else document.querySelector('.board__form').submit();
-    })
+    })*/
 </script>
 
 </html>

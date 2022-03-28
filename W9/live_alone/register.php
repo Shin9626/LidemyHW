@@ -23,7 +23,12 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
             Sign In / Sign up
         </div>
         <h3>如果您沒有註冊過本網站會員帳號，按下登入後會進行註冊</h3>
-        <div><?php if($_GET['err'] == '1062') echo "該帳號已註冊！"; ?></div>
+        <div><?php if(!empty($_GET['err'])){
+            switch($_GET['err']){
+                case '1062':  { echo "該帳號已註冊";}
+                case '1234':  { echo "請填妥空格";}
+                default: break;
+            }}?></div>
         <form method="POST" action="./handle_register.php" class="board__form">
             <div>
                 暱稱： <input type="text" name="nickname" class="board__input">

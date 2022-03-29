@@ -5,7 +5,7 @@
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    if(empty($nickname) || empty($nickname) || empty($nickname)){
+    if(empty($nickname) || empty($username) || empty($password)){
         header("Location: register.php?err=1234");
         die();
     }

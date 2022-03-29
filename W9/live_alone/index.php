@@ -1,6 +1,12 @@
 <?php
-require_once('conn.php');
-$result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
+    require_once('conn.php');
+    $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
+    $username = NULL;
+    
+    // catch cookie
+    if(!empty($_COOKIE)) $username = $_COOKIE['username'];
+    // set nickname
+    $user = $conn->query("SELECT nickname FROM users WHERE username='$username'")->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -22,19 +28,32 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
         <form method="POST" action="./handle_add_comment.php" class="board__form">
             <div class="board__title">
                 Comments
-                <div class="board__login">
-                    <a href="./register.php">會員登入/註冊</a>
+                <?php if(!$username) { ?>
+                    <div class="board__login">
+                        <a href="./register.php">登入/註冊</a>
+                    </div>
+                <?php } else {?>
+                <?php ?>
+                    <div class="board__login">
+                        <a href="./logout.php">登出</a>
+                    </div>
+                <?php } ?>
+            </div>
+            <div>
+                <?php if($username) {echo " 嗨，". $user['nickname'] . "，今天想說些什麼呢";} ?>
+            </div>
+            <?php if($username) { ?>
+                <div>
+                    <textarea id="board__text" rows="10" name="content"></textarea>
                 </div>
-            </div>
-            <div>
-                暱稱： <input type="text" name="nickname" class="board__input">
-            </div>
-            <div>
-                <textarea id="board__content" rows="10" name="content"></textarea>
-            </div>
-            <div class="board__submit-box">
-                <input type="submit" value="送出" class="board__submit-btn">
-            </div>
+                <div class="board__submit-box">
+                    <input type="submit" value="送出" class="board__submit-btn">
+                </div>
+            <?php } else {?>
+                <div class="board__default">
+                    登入後即可發布留言
+                </div>
+            <?php } ?>
         </form>
         <div class="board__hr"></div>
         <section>
@@ -56,13 +75,12 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
 <script>
     document.querySelector('.board__submit-btn').addEventListener('click', (e) => {
         e.preventDefault();
-        let nickname = document.querySelector('input[name=nickname]').value;
         let content = document.querySelector('textarea[name=content]').value;
         console.log(content);
 
-        if (nickname == "" || content == "") {
+        if (content == "") {
             let warning = document.createElement('span');
-            warning.innerText = '暱稱或留言內容不可為空白';
+            warning.innerText = '留言內容不可為空白';
             warning.classList.add('warning');
 
             if (!document.querySelector('.warning')) {

@@ -77,13 +77,18 @@ header {
     color: aliceblue;
 }
 
+.board__default {
+    font-size: 18px;
+    text-align: left;
+}
+
 .board__input {
     padding: 5px;
     border: 1px rgb(130, 168, 218) solid;
     border-radius: 5px;
 }
 
-#board__content {
+#board__text {
     width: 100%;
 
     border: 1px rgb(130, 168, 218) solid;

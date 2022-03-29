@@ -20,9 +20,8 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
     </header>
     <main class="board">
         <div class="board__title">
-            Sign In / Sign up
+            Sign up
         </div>
-        <h3>如果您沒有註冊過本網站會員帳號，按下登入後會進行註冊</h3>
         <div><?php if(!empty($_GET['err'])){
             switch($_GET['err']){
                 case '1062':  { echo "該帳號已註冊";}
@@ -40,7 +39,8 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
                 密碼： <input type="password" name="password" class="board__input">
             </div>
             <div class="board__submit-box">
-                <input type="submit" value="登入" class="board__submit-btn">
+                如果您已經有會員帳號，請<a href="./login.php">按此登入</a>
+                <input type="submit" value="註冊" class="board__submit-btn">
             </div>
         </form>
         <div class="board__hr"></div>

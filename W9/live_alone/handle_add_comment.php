@@ -1,8 +1,11 @@
 <?php
     require_once('conn.php');
+    require_once('utils.php');
 
-    $nickname = $_POST['nickname'];
     $content = $_POST['content'];
+
+    $user = GetUserFromToken($_COOKIE['token']);
+    $nickname = $user['nickname'];
 
     $sql = "INSERT INTO comments(nickname, content)
             VALUES('$nickname', '$content')";

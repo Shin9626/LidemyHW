@@ -1,17 +1,28 @@
 <?php
     require_once('conn.php');
-    $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
+    require_once('utils.php');
+
     $username = NULL;
+    if(!empty($_COOKIE['token'])){
+        $user = GetUserFromToken($_COOKIE['token']);
+        $username = $user['username'];
+    }
     
-    // catch cookie
-    if(!empty($_COOKIE)) $username = $_COOKIE['username'];
+
     // set nickname
-    $user = $conn->query("SELECT nickname FROM users WHERE username='$username'")->fetch_assoc();
+    $sql = sprintf(
+        "SELECT nickname FROM users WHERE username='%s'",
+        $username
+    );
+    $result = $conn->query($sql);
+    $user = $result->fetch_assoc();
+
+    // get comments
+    $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

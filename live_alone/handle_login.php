@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('conn.php');
     require_once('utils.php');
 
@@ -7,32 +8,28 @@
 
     if( empty($username) || empty($password)){
         header("Location: login.php?err=1234");
-        die();
+        exit();
     }
 
-    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM users WHERE username=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $username);
+    $result = $stmt->execute();
 
     if(!$result) die($conn->error);
-
-    if($result->num_rows){
-        // give token
-        $token = GenerateToken();
-
-        // send token SQL
-        $sql = sprintf(
-            "INSERT INTO tokens(token, username) VALUES('%s', '%s')",
-            $token,
-            $username
-        );
-
-        $result = $conn->query($sql);
-
-        setcookie("token", $token, time()+3600);
-        header("Location: index.php");
+    
+    if($result->num_rows == '0'){
+        header("Location: login.php?err=1011");
+        exit();
     }
-    else{
-        header("Location: login.php?err=1011");die();
+
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    if(password_verify($password, $row['password'])) {
+        $_SESSION['username'] = $username;
+        header("Location: index.php");
+    } else {
+        header("Location: login.php?err=1011");
+        exit();
     }
 ?>

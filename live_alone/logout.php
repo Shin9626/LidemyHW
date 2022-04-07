@@ -1,9 +1,5 @@
 <?php
-    require_once('conn.php');
-
-    $token = $_COOKIE['token'];
-
-    $conn->query("DELETE FROM tokens WHERE token='$token'");
-    setcookie("token", "", time()-3600);
+    session_start();
+    session_destroy();
     header("Location: ./index.php");
 ?>

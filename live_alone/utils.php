@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('conn.php');
 
     function GenerateToken(){
@@ -17,5 +18,17 @@
         $result = $conn->query("SELECT * FROM users WHERE username='$username'");
         $row = $result->fetch_assoc();
         return $row;
+    }
+
+    function GetUserFromUsername($username){
+        global $conn;
+
+        $result = $conn->query("SELECT * FROM users WHERE username='$username'");
+        $row = $result->fetch_assoc();
+        return $row;
+    }
+
+    function Escape($str){
+        return htmlspecialchars($str, ENT_QUOTES);
     }
 ?>

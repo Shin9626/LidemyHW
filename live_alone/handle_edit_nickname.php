@@ -3,14 +3,12 @@
     require_once('conn.php');
     require_once('utils.php');
 
-    $content = $_POST['content'];
+    $nickname = $_POST['nickname'];
+    $username = $_SESSION['username'];
 
-    $user = GetUserFromUsername($_SESSION['username']);
-    $username = $user['username'];
-
-    $sql = "INSERT INTO comments(username, content) VALUES(?, ?)";
+    $sql = "UPDATE users SET nickname=? WHERE username=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $username, $content);
+    $stmt->bind_param('ss', $nickname, $username);
 
     $result = $stmt->execute();
 

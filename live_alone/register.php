@@ -46,24 +46,4 @@ $result = $conn->query('SELECT * FROM comments ORDER BY created_at DESC');
         <div class="board__hr"></div>
     </main>
 </body>
-<script>
-    /*document.querySelector('.board__submit-btn').addEventListener('click', (e) => {
-        e.preventDefault();
-        let nickname = document.querySelector('input[name=nickname]').value;
-        let content = document.querySelector('textarea[name=content]').value;
-        console.log(content);
-
-        if (nickname == "" || content == "") {
-            let warning = document.createElement('span');
-            warning.innerText = '暱稱或留言內容不可為空白';
-            warning.classList.add('warning');
-
-            if (!document.querySelector('.warning')) {
-                document.querySelector('.board__submit-box').insertBefore(warning, document.querySelector('.board__submit-btn'));
-            }
-
-        } else document.querySelector('.board__form').submit();
-    })*/
-</script>
-
 </html>

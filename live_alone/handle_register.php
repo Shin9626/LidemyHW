@@ -1,26 +1,29 @@
 <?php
+    session_start();
     require_once('conn.php');
 
     $nickname = $_POST['nickname'];
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     if(empty($nickname) || empty($username) || empty($password)){
         header("Location: register.php?err=1234");
-        die();
+        exit();
     }
 
     register_shutdown_function('shutdown', $conn);
-
-    $sql = "INSERT INTO users(nickname, username, password)
-                VALUES('$nickname', '$username', '$password')";
-
-    $result = $conn->query($sql);
-    
-    if($result) echo "註冊成功！" . '<a href="./index.php">回到首頁</a>';
-
     function shutdown($conn){
         if($conn->errno == '1062') header("Location: register.php?err=1062");
         die();
+    }
+
+    $sql = "INSERT INTO users(nickname, username, password) VALUES(?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('sss', $nickname, $username, $password);
+    $result = $stmt->execute();
+    
+    if($result){
+        $_SESSION['username'] = $username;
+        echo "註冊成功！" . '<a href="./index.php">回到首頁</a>';
     }
 ?>

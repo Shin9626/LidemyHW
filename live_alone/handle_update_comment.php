@@ -4,13 +4,11 @@
     require_once('utils.php');
 
     $content = $_POST['content'];
+    $id = $_POST['id'];
 
-    $user = GetUserFromUsername($_SESSION['username']);
-    $username = $user['username'];
-
-    $sql = "INSERT INTO comments(username, content) VALUES(?, ?)";
+    $sql = "UPDATE comments SET content=? WHERE id=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $username, $content);
+    $stmt->bind_param('ss', $content, $id);
 
     $result = $stmt->execute();
 

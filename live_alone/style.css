@@ -51,18 +51,25 @@ header {
     font-size: 28px;
 }
 
-.board__login {
+.board__btn {
     display: flex;
     align-items: center;
-
+    
     padding: 8px 10px;
-
+    
     background-color: rgb(255, 255, 255);
-
+    
     border: 1px rgb(130, 168, 218) solid;
     border-radius: 5px;
 
+    color: rgb(40, 87, 148);
+    
     transition: 0.3s;
+}
+
+.board__btn:hover {
+    background-color: rgb(40, 87, 148);
+    color: aliceblue;
 }
 
 .board__login a {
@@ -72,9 +79,9 @@ header {
     font-weight: bolder;
 }
 
-.board__login:hover {
-    background-color: rgb(40, 87, 148);
-    color: aliceblue;
+.form__box {
+    display: flex;
+    flex-direction: row;
 }
 
 .board__default {
@@ -101,27 +108,6 @@ header {
     align-items: center;
 
     font-weight: bold;
-}
-
-.board__submit-btn {
-    margin-left: 10px;
-    padding: 8px 18px;
-
-    background-color: rgb(255, 255, 255);
-
-    border: 1px rgb(130, 168, 218) solid;
-    border-radius: 5px;
-
-    color : rgb(40, 87, 148);
-    font-size: 14px;
-    font-weight: bolder;
-
-    transition: 0.3s;
-}
-
-.board__submit-btn:hover {
-    background-color: rgb(40, 87, 148);
-    color: aliceblue;
 }
 
 .board__hr {
@@ -176,4 +162,8 @@ header {
 
 .warning {
     color: red;
+}
+
+.hide {
+    display: none;
 }

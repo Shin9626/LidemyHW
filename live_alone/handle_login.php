@@ -27,6 +27,7 @@
     $row = $result->fetch_assoc();
     if(password_verify($password, $row['password'])) {
         $_SESSION['username'] = $username;
+        $_SESSION['rank'] = $row['rank'];
         header("Location: index.php");
     } else {
         header("Location: login.php?err=1011");

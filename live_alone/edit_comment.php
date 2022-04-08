@@ -3,11 +3,18 @@
     require_once('utils.php');
 
     $id = $_GET['id'];
-    
+    $username = $_SESSION['username'];
+
     $stmt = $conn->prepare("SELECT * FROM comments WHERE id=?");
     $stmt->bind_param('s', $id);
     $result = $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
+
+    if($username != $row['username']){
+        echo "不可以竄改別人的留言哦！";
+        echo '<a href="./index.php?page=1>">回到首頁</a>';
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>

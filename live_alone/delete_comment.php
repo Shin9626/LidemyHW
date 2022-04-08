@@ -3,12 +3,12 @@
     require_once('conn.php');
     require_once('utils.php');
 
-    $content = $_POST['content'];
+    $id = $_GET['id'];
     $username = $_SESSION['username'];
 
-    $sql = "INSERT INTO comments(username, content) VALUES(?, ?)";
+    $sql = "UPDATE comments SET is_deleted=1 WHERE id=? AND username=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $username, $content);
+    $stmt->bind_param('ss', $id, $username);
 
     $result = $stmt->execute();
 

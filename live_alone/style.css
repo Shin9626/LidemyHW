@@ -72,11 +72,25 @@ header {
     color: aliceblue;
 }
 
+.log__box {
+    display: flex;
+}
+
+.board__login {
+    margin-left: 5px;
+}
+
 .board__login a {
     text-decoration: none;
     color: rgb(40, 87, 148);
     font-size: 14px;
     font-weight: bolder;
+
+    transition: 0.3s;
+}
+
+.board__login a:hover {
+    color: aliceblue;
 }
 
 .form__box {
@@ -158,12 +172,47 @@ header {
     max-width: 450px;
     word-break: break-word;
     white-space: pre-line;
-} 
+}
+
+.card__content div{
+    margin-top: 10px;
+}
 
 .warning {
     color: red;
 }
 
+a {
+    text-decoration: none;
+}
+
 .hide {
     display: none;
+}
+
+.page__option {
+    text-align: center;
+}
+
+.page__box {
+    display: flex;
+    justify-content: center;
+}
+
+.page__box a {
+    margin: 10px 2px;
+    padding: 8px 10px;
+
+    border: 1px rgb(130, 168, 218) solid;
+    border-radius: 5px;
+
+    color: rgb(39, 107, 163);
+    text-decoration: none;
+
+    transition: 0.3s;
+}
+
+.page__box a:hover {
+    background-color: rgb(40, 87, 148);
+    color: aliceblue;
 }

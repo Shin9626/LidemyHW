@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JQuery Practice</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+    Name:<input type="text" name="country-name">
+    <button class="btn">送出</button>
+    <div class="list">
+        
+    </div>
+</body>
+<script>
+    $(document).ready(()=>{
+        $('.btn').click(()=>{
+            const value = $('input[name=country-name]').val();
+            if(value == "") {
+                alert('請輸入名稱')
+                return
+            }
+
+            $('.list').empty()
+            $.ajax({
+                method: 'GET',
+                url: `https://restcountries.com/v3.1/name/${value}`,
+                success: countries => {
+                    for(let country of countries){
+                        $('.list').append(
+                            `<div class="list-item">${country.name.common} ${Object.getOwnPropertyNames(country.currencies)[0]}</div>`
+                        )
+                    }
+                }
+            })
+        })
+    })
+
+</script>
+</html>

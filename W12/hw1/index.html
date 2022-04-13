@@ -16,15 +16,17 @@
                     <div class="alert alert-info mt-4" role="alert">
                         邊緣世界 Bootstrap 版
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">暱稱</label>
-                        <input type="email" class="form-control" id="exampleFormControlInput1" name="nickname">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">寫下留言吧</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-                            name="content"></textarea>
-                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">暱稱</label>
+                            <input type="texy" class="form-control" name="nickname">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">寫下留言吧</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                name="content"></textarea>
+                        </div>
+                    </form>
                     <div class="d-grid">
                         <button class="btn btn-info form__submit">送出</button>
                     </div>
@@ -33,23 +35,13 @@
             <hr>
             <div class="row">
                 <div class="col-12 comments__box">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="comments__name">
-                                123
-                            </div>
-                            <div class="comments__content">
-                                This is some text within a card body.
-                            </div>        
-                        </div>
-                    </div>
-                </div>  
+                </div>
+            </div>
+            <div class="d-grid">
+                <button class="btn btn-info comment__load">載入更多</button>
             </div>
         </div>
     </main>
-    <section>
-
-    </section>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
@@ -61,14 +53,69 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <script>
-    $(document).ready(()=>{
-        $.ajax({
-            method: "GET",
-            url: "http://localhost/dashboard/live_alone/show_comments_api.php",
-            success: comments => {
-                console.log("get comments!");
-            }
+    $(document).ready(() => {
+
+        let page = 1;
+        GetComments(page);
+
+        $('.form__submit').click(() => {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/dashboard/live_alone/api_add_comment.php",
+                data: {
+                    nickname: $('input[name=nickname]').val(),
+                    content: $('textarea[name=content]').val()
+                }
+            })
+
+            $('.comments__box').html("");
+            $('input').val("");
+            $('textarea').val("");
+            GetComments(page);
         });
-    }); 
+
+        $('.comment__load').click(() => {
+            page++;
+            page = GetComments(page);
+            console.log(page)
+        });
+
+        function GetComments(page) {
+            $.ajax({
+                method: "GET",
+                url: `http://localhost/dashboard/live_alone/api_show_comments.php?page=${page}`,
+                success: res => {
+                    const comments = res.comments;
+                    if(comments.length < 5) {
+                        page = 1;
+                        $('.comment__load').css("visibility", "hidden");
+                    }
+                    for (const data of comments) {
+                        if (data.nickname == null) {
+                            data.nickname = data.username;
+                            data.username = "訪客";
+                        }
+
+                        $('.comments__box').append(`
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="comments__info">
+                                        <p>${data.nickname}(@${data.username}) - 
+                                            <span>${data.created_at}</span>
+                                        </p>                                       
+                                    </div>
+                                    <div class="comments__content">
+                                        ${data.content}
+                                    </div>
+                                </div>
+                            </div>`)
+                    }
+                }
+            });
+
+            return page;
+        }
+    });
 </script>
+
 </html>

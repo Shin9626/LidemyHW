@@ -38,7 +38,7 @@
             <div class="list_controll_box">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-outline-warning btn_clear col-12 col-md-3" type="button">Clear</button>
-                    <button class="btn btn-primary col-12 col-md-3" type="button">Restore</button>
+                    <button class="btn btn-primary btn_submit col-12 col-md-3" type="button">Restore</button>
                 </div>
             </div>
         </div>
@@ -53,22 +53,25 @@
 <link rel="stylesheet" href="./style.css">
 <script>
     $(document).ready(() => {
+        let count = 0;
 
         // add item 
         $('#btn-add').click(() => {
+            count++;
+
             // catch the todo content and clear the value
             let content = $('#todo_content').val();
             $('#todo_content').val("");
 
             // set new item and append it
             let new_item = `
-                <li class="list-group-item list-group-item-action" id="${content}">
+                <li class="list-group-item list-group-item-action" id="${count}">
                     <input class="form-check-input check_item" type="checkbox">
-                    <span class="list-item_content">　${content}</span>
+                    <span class="list-item_content">　</span>
                 </li>`
 
             $('.list-group').append(new_item);
-            $(`#${content} span`).text(content);
+            $(`#${count} span`).text("　" + content);
         })
 
         // controll item 
@@ -119,6 +122,38 @@
                 $('li input:checked').parent().addClass('hidden');
                 $('li input:checkbox:not(:checked)').parent().removeClass('hidden');
             }
+        })
+
+        // submit todo list
+        $('.btn_submit').click(() => {
+
+            let todoJSON = {
+                user_id: "",
+                item: []
+            };
+
+            $('li').each((index, data) => {
+
+                let id = $(data).attr("id");
+                let content = $(data).children("span").text();
+                let obj = {
+                    id: id,
+                    content: content
+                };
+
+                todoJSON['item'].push(obj);
+            })
+
+            todoJSON = JSON.stringify(todoJSON);
+
+            $.ajax({
+                type: "post",
+                url: "http://localhost/dashboard/todo_app/api_todobase.php",
+                data: todoJSON,
+                success: res => {
+                    console.log(res)
+                }
+            })
         })
     })
 </script>

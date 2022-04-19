@@ -53,6 +53,24 @@
 <link rel="stylesheet" href="./style.css">
 <script>
     $(document).ready(() => {
+
+        let search_id = new URLSearchParams(window.location.search);
+
+        if (search_id.has('id')) {
+
+            let id = search_id.get('id');
+            
+            $.ajax({
+                type: "get",
+                url: `http://localhost/dashboard/todo_app/api_todobase.php?id=${id}`,
+                success: res => {
+
+                    let result = JSON.parse(res);
+                    console.log(result.count);
+                }
+            })
+        };
+
         let count = 0;
 
         // add item 
@@ -127,31 +145,40 @@
         // submit todo list
         $('.btn_submit').click(() => {
 
-            let todoJSON = {
-                user_id: "",
-                item: []
-            };
+            let item = [];
 
             $('li').each((index, data) => {
 
                 let id = $(data).attr("id");
                 let content = $(data).children("span").text();
+                let stat = $(data).children("input").is(":checked");
+                
+
                 let obj = {
                     id: id,
-                    content: content
+                    content: content,
+                    stat: stat
                 };
 
-                todoJSON['item'].push(obj);
+                item.push(obj);
             })
 
+            let todoJSON = {
+                item,
+                count
+            };
+            
             todoJSON = JSON.stringify(todoJSON);
 
             $.ajax({
-                type: "post",
                 url: "http://localhost/dashboard/todo_app/api_todobase.php",
-                data: todoJSON,
+                method: "post",
+                data: { data : todoJSON},
+                dataType: 'text',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 success: res => {
                     console.log(res)
+                    window.history.pushState(null, null, `?id=${res}`);
                 }
             })
         })

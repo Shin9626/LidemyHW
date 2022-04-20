@@ -54,24 +54,45 @@
 <script>
     $(document).ready(() => {
 
+        // render items from id
+        function renderList(result) {
+            for( let i of result.item){
+                
+                // set item status from id 
+                let stat = "";
+                if(i.stat) stat = "checked";
+
+                // set item and append
+                let item = `
+                <li class="list-group-item list-group-item-action" id="${i.id}">
+                    <input class="form-check-input check_item" type="checkbox" ${stat}>
+                    <span class="list-item_content">　</span>
+                </li>`
+
+                $('.list-group').append(item);
+                $(`#${i.id} span`).text("　" + i.content);
+            }
+        }
+
+        // init count of items
+        let count = 0; 
+
+        // if the url has id then render the restored todo-list
         let search_id = new URLSearchParams(window.location.search);
-
+        let user_id = ""; 
+        
         if (search_id.has('id')) {
-
-            let id = search_id.get('id');
-            
+            user_id = search_id.get('id');    
             $.ajax({
-                type: "get",
-                url: `http://localhost/dashboard/todo_app/api_todobase.php?id=${id}`,
+                method: "get",
+                url: `http://localhost/dashboard/todo_app/api_todobase.php?id=${user_id}`,
                 success: res => {
-
                     let result = JSON.parse(res);
-                    console.log(result.count);
-                }
+                    count = result.count;
+                    console.log(result)
+                    renderList(result);}
             })
         };
-
-        let count = 0;
 
         // add item 
         $('#btn-add').click(() => {
@@ -85,7 +106,7 @@
             let new_item = `
                 <li class="list-group-item list-group-item-action" id="${count}">
                     <input class="form-check-input check_item" type="checkbox">
-                    <span class="list-item_content">　</span>
+                    <span class="list-item_content"></span>
                 </li>`
 
             $('.list-group').append(new_item);
@@ -93,7 +114,8 @@
         })
 
         // controll item 
-        $('.list_items').click((e) => { // event delegation
+        // event delegation
+        $('.list_items').click((e) => { 
             // edit item
             if ($(e.target).hasClass("list-item_content")) {
                 let content = e.target.innerText;
@@ -153,7 +175,6 @@
                 let content = $(data).children("span").text();
                 let stat = $(data).children("input").is(":checked");
                 
-
                 let obj = {
                     id: id,
                     content: content,
@@ -171,9 +192,9 @@
             todoJSON = JSON.stringify(todoJSON);
 
             $.ajax({
-                url: "http://localhost/dashboard/todo_app/api_todobase.php",
+                url: `http://localhost/dashboard/todo_app/api_todobase.php?id=${user_id}`,
                 method: "post",
-                data: { data : todoJSON},
+                data: { data : todoJSON },
                 dataType: 'text',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 success: res => {
@@ -184,5 +205,4 @@
         })
     })
 </script>
-
 </html>

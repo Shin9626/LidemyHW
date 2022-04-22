@@ -1,0 +1,102 @@
+$color-white: rgb(240, 248, 255)
+$color-darkgreen: rgb(11, 61, 77)
+$color-grey: rgb(51, 51, 51)
+
+%flex-center
+    display: flex
+    justify-content: center
+    align-items: center
+
+%flex-between
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+%stylized-a
+    text-decoration: none
+    color: aliceblue
+
+*
+    box-sizing:border-box
+
+a
+    @extend %stylized-a
+
+body
+    margin: auto
+    color: $color-white
+
+.nav
+    height: 80px
+
+    background-color: $color-darkgreen
+    text-align: center
+
+    &__container
+        @extend %flex-between
+        margin: auto
+        height: 100%
+        width: 80%
+
+    &__item-box
+        display: flex
+    
+    &__item
+        padding: 5px
+
+.jumbotron
+    @extend %flex-center
+    height: 350px
+    background-color: gray
+    background-image: url('../images/bk.jpg')
+    background-position: center
+
+    font-size: 64px
+    text-align: center
+    -webkit-text-stroke: 1px $color-grey
+
+.article
+    &__container
+        width: 50%
+        min-width: 300px
+
+        margin: auto
+        padding: 30px 0px
+
+    &__card-content
+        overflow: hidden
+        text-overflow: ellipsis
+        display: -webkit-box
+        -webkit-line-clamp: 3
+        -webkit-box-orient: vertical
+
+    &__card 
+        min-width: 300px
+
+        margin-top: 25px
+        padding: 10px 30px
+
+        border: 1px rgb(192, 214, 221) solid
+        border-radius: 5px
+        color: $color-grey
+
+        &-info
+            @extend %flex-between
+    
+    &__load
+        @extend %flex-center
+
+        button
+            height: 35px
+            padding: 5px 10px
+            
+            background-color: $color-darkgreen
+            border: none
+            border-radius: 5px
+            
+            color: $color-white
+
+
+        
+
+

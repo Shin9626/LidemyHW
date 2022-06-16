@@ -1,0 +1,26 @@
+body {
+    background-color: rgb(211, 211, 211);
+}
+
+.list_box {
+    margin-top: 50px;
+    padding: 20px 10px;
+
+    background-color: rgb(251, 252, 249);
+    border-radius: 10px;
+
+    box-shadow: 5px 5px 10px 1px #b8b4b2;
+}
+
+.list_controll_box {
+    margin-top: 15px;
+
+}
+
+.list_selector {
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}

@@ -42,6 +42,13 @@
                 </div>
             </div>
         </div>
+        <% if(isLogin){ %>
+            你已經登入
+            <button><a href="/logout">登出</a></button>
+        <% } else { %>
+            你還沒登入
+            <button><a href="http://localhost:5001/login">登入</a></button>
+        <% } %>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>

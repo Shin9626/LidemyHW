@@ -1,208 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
 <body>
-    <div class="container col-10 col-md-6">
-        <div class="row list_box">
-            <div class="list_title">
-                <div class="alert alert-warning" role="alert">
-                    N.T.D. - Nothing To Do ?
-                </div>
-            </div>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Write something to do!" id="todo_content">
-                <button class="btn btn-outline-secondary" type="button" id="btn-add">Add</button>
-            </div>
-            <div class="list_items">
-                <ul class="list-group">
-                </ul>
-            </div>
-            <div class="btn-group list_selector" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check list_all" name="btnradio" id="btnradio1" autocomplete="off"
-                    checked>
-                <label class="btn btn-outline-warning col-4" for="btnradio1">All</label>
+    <div>
+        <form action="/" method="post">
 
-                <input type="radio" class="btn-check list_active" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-warning col-4" for="btnradio2">Active</label>
-
-                <input type="radio" class="btn-check list_ended" name="btnradio" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-warning col-4" for="btnradio3">Ended</label>
-            </div>
-            <div class="list_controll_box">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-outline-warning btn_clear col-12 col-md-3" type="button">Clear</button>
-                    <button class="btn btn-primary btn_submit col-12 col-md-3" type="button">Restore</button>
-                </div>
-            </div>
-        </div>
-        <% if(isLogin){ %>
-            你已經登入
-            <button><a href="/logout">登出</a></button>
-        <% } else { %>
-            你還沒登入
-            <button><a href="http://localhost:5001/login">登入</a></button>
-        <% } %>
+        </form>
+        <h2>Todo list</h2>
+        <ul>
+            <% for(item of todos){ %>
+                <li><%= item.content %></li>
+            <% } %>
+        </ul>
     </div>
+    <% if(isLogin){ %>
+        你已經登入
+        <a href="/logout">登出</a>
+    <% } else { %>
+            你還沒登入
+            <a href="http://localhost:5001/login">登入</a>
+    <% } %>
+    <a href="/register">註冊</a>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous"></script>
-<link rel="stylesheet" href="../static/css/style.css">
-<script>
-    $(document).ready(() => {
-
-        // render items from id
-        function renderList(result) {
-            for (let i of result.item) {
-
-                // set item status from id 
-                let stat = "";
-                if (i.stat) stat = "checked";
-
-                // set item and append
-                let item = `
-                <li class="list-group-item list-group-item-action" id="${i.id}">
-                    <input class="form-check-input check_item" type="checkbox" ${stat}>
-                    <span class="list-item_content">　</span>
-                </li>`
-
-                $('.list-group').append(item);
-                $(`#${i.id} span`).text("　" + i.content);
-            }
-        }
-
-        // init count of items
-        let count = 0;
-
-        // if the url has id then render the restored todo-list
-        let search_id = new URLSearchParams(window.location.search);
-        let user_id = "";
-
-        if (search_id.has('id')) {
-            user_id = search_id.get('id');
-            $.ajax({
-                method: "get",
-                url: `http://localhost:5001/home?id=${user_id}`,
-                success: res => {
-                    const strData = '<%- todo.content%>'
-                    let result = strData.substring(1, strData.length - 1)
-                    result = JSON.parse(result)
-                    count = result.count;
-
-                    renderList(result);
-                }
-            })
-        };
-
-        // add item 
-        $('#btn-add').click(() => {
-            count++;
-
-            // catch the todo content and clear the value
-            let content = $('#todo_content').val();
-            $('#todo_content').val("");
-
-            // set new item and append it
-            let new_item = `
-                <li class="list-group-item list-group-item-action" id="${count}">
-                    <input class="form-check-input check_item" type="checkbox">
-                    <span class="list-item_content"></span>
-                </li>`
-
-            $('.list-group').append(new_item);
-            $(`#${count} span`).text("　" + content);
-        })
-
-        // controll item 
-        // event delegation
-        $('.list_items').click((e) => {
-            // edit item
-            if ($(e.target).hasClass("list-item_content")) {
-                let content = e.target.innerText;
-                let edit_item = `
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="${content}">
-                    <button class="btn btn-outline-secondary btn_edit" type="button">OK</button>
-                </div>`;
-
-                $(e.target.parentNode).html(edit_item);
-
-                // add listener on OK button
-                $('.btn_edit').click((e) => {
-                    let content = $(e.target).prev().val();
-                    let edit_item = `
-                    <input class="form-check-input check_item" type="checkbox">
-                    <span class="list-item_content">${content}</span>`
-
-                    $(e.target.parentNode.parentNode).html(edit_item);
-                })
-            }
-        })
-
-        // delete item
-        $('.btn_clear').click(() => {
-            $('li input:checked').parent().remove();
-        })
-
-        // pagination 
-        $('.list_selector').click((e) => {
-            // set items variaties
-            let items_checked = $('li input:checked').parent();
-            let items_not_checked = $('li input:checkbox:not(:checked)').parent();
-
-            if ($(e.target).hasClass('list_all')) {
-                // show all items
-                $('.list_items ul li').removeClass('hidden');
-            } else if ($(e.target).hasClass('list_active')) {
-                // hide items not checked
-                $('li input:checked').parent().removeClass('hidden');
-                $('li input:checkbox:not(:checked)').parent().addClass('hidden');
-            } else if ($(e.target).hasClass('list_ended')) {
-                // hide items checked
-                $('li input:checked').parent().addClass('hidden');
-                $('li input:checkbox:not(:checked)').parent().removeClass('hidden');
-            }
-        })
-
-        // submit todo list
-        $('.btn_submit').click(() => {
-
-            let item = [];
-
-            $('li').each((index, data) => {
-
-                let id = $(data).attr("id");
-                let content = $(data).children("span").text();
-                let stat = $(data).children("input").is(":checked");
-
-                item.push({ id, content, stat });
-            })
-
-            let todoJSON = { item, count };
-            todoJSON = JSON.stringify(todoJSON);
-
-            $.ajax({
-                url: `http://localhost:5001/home?id=${user_id}`,
-                method: "post",
-                data: { data: todoJSON },
-                dataType: 'text',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                success: (req, res) => {
-                    console.log(res)
-                }
-            })
-        })
-    })
-</script>
-
 </html>

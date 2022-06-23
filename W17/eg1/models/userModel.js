@@ -21,4 +21,4 @@ const userModel = {
     }
 }
 
-module.exports = todoModel;
+module.exports = userModel;

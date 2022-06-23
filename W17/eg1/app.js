@@ -7,8 +7,8 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 
-const todoController = require('./controllers/todoController')
 const userController = require('./controllers/userController')
+const commentController = require('./controllers/commentController')
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname));
@@ -22,21 +22,27 @@ app.use(session({
     //cookie: { secure: true }
 }))
 app.use((req, res, next) => {
-    res.locals.isLogin = req.session.isLogin;
+    res.locals.username = req.session.username;
     res.locals.errorMessage = req.flash('errorMessage')
     next()
 })
 
+function redirectBack(req, res) {
+    return res.redirect('back');
+}
+
 //CRUD method
 
-app.get('/home', todoController.get);
-app.get('/login', userController.login);
-app.get('/logout', userController.logout);
-app.get('/register', (req, res) => {
+app.get('/home', commentController.index);
+app.get('/home/login', userController.login);
+app.get('/home/logout', userController.logout);
+app.get('/home/register', (req, res) => {
     res.render('register')
 });
-app.post('/login', userController.handleLogin);
-app.post('/register', userController.register);
+app.get('/home/delete_comment/:id', commentController.delete);
+app.post('/home/login', userController.handleLogin, redirectBack);
+app.post('/home/register', userController.handleRegister, redirectBack);
+app.post('/home/comments', commentController.add, redirectBack);
 
 app.listen(port, () => {
     db.connect((err) => {

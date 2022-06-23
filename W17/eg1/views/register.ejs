@@ -10,10 +10,11 @@
 
 <body>
     <h2>註冊註冊</h2>
-    <form action="/register">
-        <div>username: <input type="text"></div>
-        <div>password: <input type="password"></div>
-        <div>nickname: <input type="text"></div>
+    <%= errorMessage %>
+    <form action="/home/register" method="post">
+        <div>username: <input type="text" name="username"></div>
+        <div>nickname: <input type="text" name="nickname"></div>
+        <div>password: <input type="password" name="password"></div>
         <button type="submit">註冊</button>
     </form>
 </body>

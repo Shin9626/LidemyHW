@@ -8,24 +8,32 @@
 </head>
 <body>
     <div>
-        <form action="/" method="post">
-
-        </form>
-        <h2>Todo list</h2>
-        <ul>
-            <% for(item of todos){ %>
-                <li><%= item.content %></li>
-            <% } %>
-        </ul>
+        <h2>我是留言板</h2>
     </div>
-    <% if(isLogin){ %>
-        你已經登入
-        <a href="/logout">登出</a>
+    <% if(username){ %>
+        <h4>哈囉，<%= username %>，今天想說些什麼？</h4>
+        <%= errorMessage%>
+        <form action="/home/comments" method="post">
+            <textarea name="content" cols="30" rows="10"></textarea>
+            <input type="submit">
+        </form>
+        <a href="/home/logout">登出</a>
     <% } else { %>
             你還沒登入
-            <a href="http://localhost:5001/login">登入</a>
+            <a href="/home/login">登入</a>
     <% } %>
-    <a href="/register">註冊</a>
+    <a href="/home/register">註冊</a>
+    <hr>
+    <% comments.forEach(function(comment){ %>
+        <div>
+            <h2><%= comment.nickname %></h2>
+            <p><%= comment.content %></p>
+            留言於 <%= comment.created_at %>
+            <% if(username === comment.username) { %>
+                <a href="/home/delete_comment/<%= comment.id %>">刪除</a>
+            <% } %>
+        </div>
+    <% }) %>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </html>

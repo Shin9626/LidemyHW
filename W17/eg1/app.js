@@ -39,10 +39,12 @@ app.get('/home/logout', userController.logout);
 app.get('/home/register', (req, res) => {
     res.render('register')
 });
+app.get('/home/update_comment/:id', commentController.update);
 app.get('/home/delete_comment/:id', commentController.delete);
 app.post('/home/login', userController.handleLogin, redirectBack);
 app.post('/home/register', userController.handleRegister, redirectBack);
 app.post('/home/comments', commentController.add, redirectBack);
+app.post('/home/update_comment/:id', commentController.handleUpdate);
 
 app.listen(port, () => {
     db.connect((err) => {

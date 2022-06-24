@@ -1,0 +1,11 @@
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/home">留言板</a>
+    <div>
+        <% if(username){ %>
+            <a class="btn btn-outline-light" href="/home/logout">登出</a>
+        <% } else { %>
+            <a class="btn btn-outline-light" href="/home/login">登入</a>
+            <a class="btn btn-outline-light" href="/home/register">註冊</a>
+        <% } %>
+    </div>
+</nav>

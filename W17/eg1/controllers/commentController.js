@@ -26,13 +26,26 @@ const commentController = {
     },
 
     delete: (req, res) => {
-        const id = req.params.id
-        const username = req.session.username
-        console.log(id)
-        commentModel.delete(id, username, (err) => {
+        commentModel.delete(req.params.id, req.session.username, (err) => {
             res.redirect('/home')
         })
-    }
+    },
+
+    update: (req, res) => {
+        commentModel.get(req.params.id, req.session.username, (err, result) => {
+            res.render('update', { comment: result })
+        })
+    },
+
+    handleUpdate: (req, res) => {
+        commentModel.update(req.params.id, req.session.username, req.body.content, (err) => {
+            if (err) {
+                req.flash('errorMessage', '更新失敗，請重新嘗試')
+                res.redirect('back')
+            }
+            res.redirect('/home')
+        })
+    },
 }
 
 module.exports = commentController;

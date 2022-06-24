@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('template/head')%>
+</head>
+<body>
+    <%- include('template/navbar')%>
+    <div class="container">
+        <div class="mt-4">
+            <h2>編輯文章</h2>
+            <form action="/home/update_comment/<%= comment.id %>" method="post">
+                <div class="form-group">
+                    <textarea name="content" class="form-control" rows="3"><%= comment.content %></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">送出留言</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</html>

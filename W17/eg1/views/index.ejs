@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <%- include('template/head')%>
 </head>
+<title>留言板</title>
+
 <body>
-    <div>
-        <h2>我是留言板</h2>
-    </div>
-    <% if(username){ %>
-        <h4>哈囉，<%= username %>，今天想說些什麼？</h4>
-        <%= errorMessage%>
-        <form action="/home/comments" method="post">
-            <textarea name="content" cols="30" rows="10"></textarea>
-            <input type="submit">
-        </form>
-        <a href="/home/logout">登出</a>
-    <% } else { %>
-            你還沒登入
-            <a href="/home/login">登入</a>
-    <% } %>
-    <a href="/home/register">註冊</a>
-    <hr>
-    <% comments.forEach(function(comment){ %>
-        <div>
-            <h2><%= comment.nickname %></h2>
-            <p><%= comment.content %></p>
-            留言於 <%= comment.created_at %>
-            <% if(username === comment.username) { %>
-                <a href="/home/delete_comment/<%= comment.id %>">刪除</a>
-            <% } %>
+    <%- include('template/navbar')%>
+        <div class="container col-9">
+            <div class="mt-4">
+                <% if(username){ %>
+                    <h4>哈囉，<%= username %>，想說些什麼？</h4>
+                    <%= errorMessage%>
+                    <form action="/home/comments" method="post">
+                        <div class="form-group">
+                            <textarea name="content" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">送出留言</button>
+                    </form>
+                    <hr>
+                <% } %>
+
+                <% comments.forEach(function(comment){ %>
+                    <div class="card mt-2 col-12">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= comment.nickname %></h5>
+                            <h6 class="card-subtitle mb-2 text-muted"><%= comment.created_at %></h6>
+                            <p class="card-text"><%= comment.content %></p>
+                            <% if(username===comment.username) { %>
+                                <a href="/home/update_comment/<%= comment.id %>" class="card-link">編輯</a>
+                                <a href="/home/delete_comment/<%= comment.id %>" class="card-link">刪除</a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
-    <% }) %>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 </html>

@@ -21,9 +21,6 @@ sequelize.sync().then(() => {
       id: 3,
     },
   }).then((user) => {
-    const { username } = user;
-    user.destroy().then(() => {
-      console.log(`${username}has been destroyed!`);
-    });
+    user.destroy().then();
   });
 });

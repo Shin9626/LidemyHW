@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
-const userModel = require('../models/userModel');
+const db = require('../models');
+
+const { User } = db;
 
 const saltRounds = 10;
 
@@ -24,23 +26,29 @@ const userController = {
       req.flash('errorMessage', '有未填欄位！');
       next();
     }
-    userModel.get(username, (err, user) => {
-      if (err) {
-        req.flash('errorMessage', err.toString());
-        next();
-      }
+
+    User.findOne({
+      where: {
+        username,
+      },
+    }).then((user) => {
       if (!user) {
         req.flash('errorMessage', '帳號不存在或密碼錯誤！');
         next();
       }
-      bcrypt.compare(password, user.password, (error, isSuccess) => {
-        if (error || !isSuccess) {
+
+      bcrypt.compare(password, user.password, (err, isSuccess) => {
+        if (err || !isSuccess) {
           req.flash('errorMessage', '帳號不存在或密碼錯誤！');
           next();
         }
         req.session.username = username;
+        req.session.userId = user.id;
         res.redirect('/home');
       });
+    }).catch((err) => {
+      req.flash('errorMessage', err.toString());
+      next();
     });
   },
 
@@ -50,22 +58,24 @@ const userController = {
       req.flash('errorMessage', '缺少必要欄位');
       next();
     }
+
     bcrypt.hash(password, saltRounds, (err, hash) => {
       if (err) {
         req.flash('errorMessage', err.toString());
         next();
       }
-      userModel.add({
+
+      User.create({
         username,
         nickname,
         password: hash,
-      }, (error) => {
-        if (error) {
-          req.flash('errorMessage', '該 username 已經重複');
-          next();
-        }
+      }).then((user) => {
         req.session.username = username;
+        req.session.userId = user.Id;
         res.redirect('/home');
+      }).catch(() => {
+        req.flash('errorMessage', '該 username 已經重複');
+        next();
       });
     });
   },

@@ -1,50 +1,70 @@
-const commentModel = require('../models/commentModel');
+const db = require('../models');
+
+const { Comment } = db;
+const { User } = db;
 
 const commentController = {
-  add: (req, res, next) => {
-    const { username } = req.session;
+  add: (req, res) => {
+    const { userId } = req.session;
     const { content } = req.body;
-    if (!username || !content) {
+    if (!userId || !content) {
       req.flash('errorMessage', '留言失敗！');
       res.redirect('/home');
-    } commentModel.add(username, content, (err) => {
-      if (err) {
-        req.flash('errorMessage', err.toString());
-      }
-      next();
+    }
+
+    Comment.create({
+      content,
+      UserId: userId,
+    }).then(() => {
+      res.redirect('/home');
     });
   },
 
   index: (req, res) => {
-    commentModel.getAll((err, results) => {
-      if (err) {
-        req.flash('errorMessage', '無法讀取留言，請重新整理');
-      }
-      res.render('index', { comments: results });
+    Comment.findAll({
+      include: User,
+      order: [['createdAt', 'DESC']],
+    }).then((comments) => {
+      res.render('index', { comments });
     });
   },
 
   delete: (req, res) => {
-    commentModel.delete(req.params.id, req.session.username, (err) => {
-      if (err) {
-        req.flash('errorMessage', err.toString());
-      }
+    Comment.findOne({
+      where: {
+        id: req.params.id,
+        UserId: req.session.userId,
+      },
+    }).then((comment) => comment.destroy()).then(() => {
+      res.redirect('/home');
+    }).catch(() => {
       res.redirect('/home');
     });
   },
 
   update: (req, res) => {
-    commentModel.get(req.params.id, req.session.username, (err, result) => {
-      res.render('update', { comment: result });
+    Comment.findOne({
+      where: {
+        id: req.params.id,
+      },
+    }).then((comment) => {
+      res.render('update', {
+        comment,
+      });
     });
   },
 
   handleUpdate: (req, res) => {
-    commentModel.update(req.params.id, req.session.username, req.body.content, (err) => {
-      if (err) {
-        req.flash('errorMessage', '更新失敗，請重新嘗試');
-        res.redirect('back');
-      }
+    Comment.findOne({
+      where: {
+        id: req.params.id,
+        UserId: req.session.userId,
+      },
+    }).then((comment) => comment.update({
+      content: req.body.content,
+    })).then(() => {
+      res.redirect('/home');
+    }).catch(() => {
       res.redirect('/home');
     });
   },

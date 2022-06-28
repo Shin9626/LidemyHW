@@ -5,7 +5,6 @@ const app = express();
 const port = 5001;
 const session = require('express-session');
 const flash = require('connect-flash');
-const db = require('./db');
 
 const userController = require('./controllers/userController');
 const commentController = require('./controllers/commentController');
@@ -47,9 +46,5 @@ app.post('/home/comments', commentController.add, redirectBack);
 app.post('/home/update_comment/:id', commentController.handleUpdate);
 
 app.listen(port, () => {
-  db.connect((err) => {
-    if (err) throw err;
-    console.log('Connected!');
-  });
   console.log(`Example app listening on port ${port}`);
 });

@@ -76,7 +76,7 @@ h3 {
     padding: 15px;
     font-size: 18px;
     color: aliceblue;
-    background-color: rgb(228, 42, 42);
+    background-color: rgb(53, 86, 175);
     border-radius: 7px;
     border: none;
     transition: 0.3s;
@@ -84,7 +84,7 @@ h3 {
 }
 
 .lottery__go:hover {
-    background-color: rgb(112, 0, 0);
+    background-color: rgb(59, 58, 63);
 }
 
 .lottery__go:active {
@@ -95,4 +95,9 @@ h3 {
 footer {
     height: 50px;
     background-color: rgb(42, 99, 91);
+}
+
+nav a{
+    color: black;
+    text-decoration: none;
 }

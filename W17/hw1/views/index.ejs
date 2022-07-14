@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('template/head')%>
+</head>
+<body>
+    <%- include('template/navbar')%>
+    <div class="jumbotron">
+        SHIN'S BLOG
+    </div>
+    <main>   
+        <div class="article__container">
+            <div class="article__box">
+                <% articles.forEach((article) => { %>
+                <div class="article__card">
+                    <div class="article__card-info">
+                        <h3><%= article.title %></h3>
+                        <span><%= article.createdAt %></span>
+                    </div>
+                    <hr>
+                    <p><%= article.content %></p>
+                </div>
+                <% }) %>
+                <div class="article__load" style="display:none">
+                    <button type="submit" class="article__load-btn">載入更多</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

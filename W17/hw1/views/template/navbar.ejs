@@ -1,0 +1,21 @@
+<nav>
+    <div class="nav__container">
+        <div class="nav__title">
+            <a href="/">Shin's Blog</a>
+        </div>
+        <div class="nav__item-box">
+            <div class="nav__item"><a href="/about">關於我</a></div>
+            <div class="nav__item">
+                <a href="/admin">文章管理</a>
+            </div>
+            <div class="nav__item">
+                <% if(username){ %>
+                <a href="./logout">登出後台</a>
+                <% } else{ %>
+                <a href="./login">登入後台</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
+<link rel="stylesheet" href="../static/styles/style.css">

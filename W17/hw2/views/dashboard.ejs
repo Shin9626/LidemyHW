@@ -23,8 +23,8 @@
                         <div>獎品描述：<%= award.content %></div>
                         <div><img src="<%= award.url %>" alt="" width="300px" height="200px"></div>
                         <div>
-                            <a href="">編輯</a>
-                            <a href="">刪除</a>
+                            <a href="/update/<%= award.id %>">編輯</a>
+                            <a href="/delete/<%= award.id %>">刪除</a>
                         </div>
                         <hr>
                 <% }); %>

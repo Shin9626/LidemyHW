@@ -4,7 +4,23 @@ const { User, Award } = db;
 
 const userController = {
   home: (req, res) => {
-    res.render('index');
+    Award.findAll().then((awards) => {
+      res.render('index', { awards });
+    });
+  },
+
+  result: (req, res) => {
+    Award.findAll().then((awards) => {
+      let allAwards = [];
+
+      awards.forEach((award) => {
+        allAwards.push(award);
+      });
+
+      const boxSize = allAwards.length;
+      const drewResult = Math.floor(Math.random() * boxSize);
+      res.render('result', { result: allAwards[drewResult] });
+    });
   },
 
   dashboard: (req, res) => {

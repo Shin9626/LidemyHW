@@ -30,10 +30,15 @@ app.use((req, res, next) => {
 
 // router
 app.get('/', userController.home);
+app.get('/result', userController.result);
 app.get('/dashboard', userController.dashboard);
 app.get('/logout', userController.handleLogout);
 app.get('/login', userController.login);
 app.post('/login', userController.handleLogin);
+
+app.get('/update/:id', awardController.update);
+app.post('/update/:id', awardController.handleUpdate);
+app.get('/delete/:id', awardController.handleDelete);
 app.post('/add', awardController.handleAdd);
 
 app.listen(port, () => {

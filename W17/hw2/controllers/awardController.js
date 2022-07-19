@@ -5,13 +5,19 @@ const { Award } = db;
 const awardController = {
   handleAdd: (req, res) => {
     const {
-      name, content, rate, url,
+      name, content, rate, url, total,
     } = req.body;
-    Award.create({
-      name, content, rate, url,
-    }).then(() => {
-      res.redirect('dashboard');
-    });
+    const checkRate = (Number(total) + Number(rate));
+    if (checkRate > 100) {
+      req.flash('errorMessage', '所有獎品的機率總和不能超過 100');
+      res.redirect('/dashboard');
+    } else {
+      Award.create({
+        name, content, rate, url,
+      }).then(() => {
+        res.redirect('/dashboard');
+      });
+    }
   },
 
   update: (req, res) => {

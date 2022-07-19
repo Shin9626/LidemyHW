@@ -11,7 +11,7 @@ const userController = {
 
   result: (req, res) => {
     Award.findAll().then((awards) => {
-      let allAwards = [];
+      const allAwards = [];
 
       awards.forEach((award) => {
         allAwards.push(award);
@@ -30,7 +30,11 @@ const userController = {
       Award.findAll({
         order: [['createdAt', 'DESC']],
       }).then((awards) => {
-        res.render('dashboard', { awards });
+        let totalRate = 0;
+        awards.forEach((award) => {
+          totalRate += award.rate;
+        });
+        res.render('dashboard', { awards, totalRate });
       });
     }
   },

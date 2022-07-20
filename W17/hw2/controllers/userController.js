@@ -11,15 +11,30 @@ const userController = {
 
   result: (req, res) => {
     Award.findAll().then((awards) => {
-      const allAwards = [];
-
+      let sum = 0;
+      let result = {};
+      const drewResult = Math.floor(Math.random() * 100);
+      console.log(drewResult);
       awards.forEach((award) => {
-        allAwards.push(award);
+        console.log(sum);
+        if (sum + Number(award.rate) >= drewResult) {
+          result = award;
+          sum = -999;
+        } else {
+          sum += Number(award.rate);
+        }
       });
 
-      const boxSize = allAwards.length;
-      const drewResult = Math.floor(Math.random() * boxSize);
-      res.render('result', { result: allAwards[drewResult] });
+      if (sum < 0) {
+        res.render('result', { result });
+      } else {
+        result = {
+          name: '哭哭沒中',
+          content: '幫你哭哭',
+          url: 'https://pyxis.nymag.com/v1/imgs/d67/377/dc02b103fe29d8f6a3f9fb287b75bdb552-19-inside-out-cry.2x.rhorizontal.w710.jpg',
+        };
+        res.render('result', { result });
+      }
     });
   },
 

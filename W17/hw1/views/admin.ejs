@@ -3,20 +3,28 @@
 <head>
     <%- include('template/head')%>
 </head>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 <body>
     <%- include('template/navbar')%>
-    <main>
-        <div class="article__container">
-            <form action="./handleAddArticle" method="POST">
-                <div class="article__creater">
-                    <h2>寫點文章吧！</h2>
-                    <input type="text" name="title" placeholder="文章標題">
-                    <textarea name="content" id="" cols="30" rows="10" placeholder="文章內容"></textarea>
-                    <button type="submit">新增文章</button>
-                </div>
-            </form>
+        <main>
+            <div class="article__container">
+                <form action="./handleAddArticle" method="POST">
+                    <div class="article__creater">
+                        <h2>寫點文章吧！</h2>
+                        <input type="text" name="title" placeholder="文章標題">
+                        <textarea name="content" id="editor" cols="30" rows="10" placeholder="文章內容"></textarea>
+                        <button type="submit">新增文章</button>
+                    </div>
+                </form>
             </div>
-        </div>
-    </main>
+            </div>
+        </main>
 </body>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 </html>

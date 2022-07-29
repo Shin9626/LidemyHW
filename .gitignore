@@ -1,5 +1,2 @@
-#忽略 W2 的 node module
+#忽略 node module
 node_modules
-W2/node_modules
-W17/eg1/node_modules
-W17/eg2/node_modules

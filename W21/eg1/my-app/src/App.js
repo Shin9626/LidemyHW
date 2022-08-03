@@ -1,55 +1,43 @@
-import styled from 'styled-components';
+import { useState } from 'react';
+import TodoItem from './TodoItem';
 
-const TodoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid grey;
-
-  padding: 5px;
-
-  & + & {
-    margin-top: 4px;
-  }
-`;
-
-const TodoContent = styled.div`
-  color: blue;
-  font-size: 10px;
-
-  ${ props => props.size === 'XL' && `
-    font-size: 20px;
-    font-weight: bold;
-  `}
-`;
-
-const ButtonWrapper = styled.div``;
-
-const TodoButton = styled.button`
-  color: black;
-
-  & + & {
-    margin-left: 4px;
-  }
-`;
-
-function TodoItem({ size, content }) {
-  return (
-    <TodoWrapper>
-      <TodoContent size={size}>{content}</TodoContent>
-      <ButtonWrapper>
-        <TodoButton>已完成</TodoButton>
-        <TodoButton>刪除</TodoButton>
-      </ButtonWrapper>
-    </TodoWrapper>
-  );
-}
+let id = 2;
 
 function App() {
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      content: '123',
+    },
+  ])
+
+  const [todoValue, setTodoValue] = useState();
+
+  const handleButtonClick = () => {
+    setTodos([{
+      id,
+      content: todoValue,
+    },
+     ...todos,]);
+     setTodoValue('');
+     id++;
+  }
+
+  const handleInputChange = (e) => {
+    setTodoValue(e.target.value);
+  }
+
+  const handleDeleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id != id));
+  }
+
   return (
     <div className='App'>
-      <TodoItem content={123}/>
-      <TodoItem content={456} size="XL"/>
+      <input placeholder='something to do?' value={todoValue} onChange={handleInputChange}/>
+      <button onClick={handleButtonClick}>新增</button>
+      {
+        todos.map(todo => <TodoItem key={todo.id} todo={todo} handleDeleteTodo={handleDeleteTodo}/>)
+      }
     </div>
   );
 }
